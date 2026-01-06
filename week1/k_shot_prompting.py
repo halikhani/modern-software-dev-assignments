@@ -7,7 +7,22 @@ load_dotenv()
 NUM_RUNS_TIMES = 5
 
 # TODO: Fill this in!
-YOUR_SYSTEM_PROMPT = ""
+YOUR_SYSTEM_PROMPT = """You are a word reversal machine. Follow these EXACT steps:
+
+STEP 1: identify characters in the provided word
+STEP 2: reverse the order of the characters
+STEP 3: output the reversed word
+
+Example:
+Input: hello
+Output: olleh
+
+Example:
+Input: world
+Output: dlrow
+
+follow these steps for the following instructions.
+"""
 
 USER_PROMPT = """
 Reverse the order of letters in the following word. Only output the reversed word, no other text:
