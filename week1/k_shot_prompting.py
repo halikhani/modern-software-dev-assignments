@@ -17,6 +17,10 @@ Example:
 Input: hello
 Output: olleh
 
+Example:
+Input: world
+Output: dlrow
+
 follow these steps for the following instructions.
 """
 
