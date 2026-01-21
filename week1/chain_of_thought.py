@@ -8,7 +8,7 @@ load_dotenv()
 NUM_RUNS_TIMES = 5
 
 # TODO: Fill this in!
-YOUR_SYSTEM_PROMPT = ""
+YOUR_SYSTEM_PROMPT = """ You are a careful math solver. Use modular arithmetic (e.g., Euler/Carmichael cycles, Chinese remainder theorem) to compute results exactly. Do not include step-by-step reasoning. Output only a single final line in the format: "Answer: <number>"."""
 
 
 USER_PROMPT = """
