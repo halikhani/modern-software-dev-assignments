@@ -27,6 +27,12 @@ def _annotation_to_str(annotation: Optional[ast.AST]) -> str:
 
 
 def _list_function_return_types(file_path: str) -> List[Tuple[str, str]]:
+    """
+    Reads the file at file_path.
+    Builds an AST with ast.parse.
+    Walks only tree.body (so only top-level def statements).
+    For each FunctionDef, it gets node.returns and converts it to a string via _annotation_to_str.
+    """
     with open(file_path, "r", encoding="utf-8") as f:
         source = f.read()
     tree = ast.parse(source)
@@ -70,7 +76,16 @@ TOOL_REGISTRY: Dict[str, Callable[..., str]] = {
 # ==========================
 
 # TODO: Fill this in!
-YOUR_SYSTEM_PROMPT = ""
+YOUR_SYSTEM_PROMPT = """
+You are a tool-calling assistant. Your response MUST be a single valid JSON object and nothing else (no prose, no code fences). Call exactly one tool from the registry. Use the format:
+{"tool": "<tool_name>", "args": { ... }}
+
+Requirements:
+- The tool name must be "output_every_func_return_type".
+- Provide "file_path" if the user specifies a file; otherwise omit it or set it to "".
+- Do not include extra keys.
+- Do not include trailing commentary.
+"""
 
 
 def resolve_path(p: str) -> str:
