@@ -15,8 +15,30 @@ Keep the implementation minimal.
 """
 
 # TODO: Fill this in!
-YOUR_REFLEXION_PROMPT = ""
+# “reflexion” means a second‑pass self‑improvement step: the model first generates a function, 
+# you run it against tests, then you feed back the failures and ask the model to revise its code. 
+# It’s a lightweight loop of generate → evaluate → reflect → improve.
+# YOUR_REFLEXION_PROMPT = """
+# You are improving a previously generated solution. You will receive:
+# 1) The prior output
+# 2) A list of failures or feedback
 
+# Use the feedback to correct the output. Keep changes minimal and focused on the issues. Make sure to pass all the tests.
+# Return only the corrected output in the same format as the original requirement (no extra commentary).
+# """
+YOUR_REFLEXION_PROMPT = """
+You are improving a previously generated function using the failure feedback. 
+Fix all reported failures and ensure the solution satisfies ALL original rules:
+- length >= 8
+- at least one lowercase
+- at least one uppercase
+- at least one digit
+- at least one special character from !@#$%^&*()-_
+- no whitespace
+
+Return ONLY a single fenced Python code block defining is_valid_password(password: str) -> bool.
+No extra text or comments.
+"""
 
 # Ground-truth test suite used to evaluate generated code
 SPECIALS = set("!@#$%^&*()-_")
@@ -39,6 +61,7 @@ def extract_code_block(text: str) -> str:
 
 
 def load_function_from_code(code_str: str) -> Callable[[str], bool]:
+    """dynamically loads a function named is_valid_password from a string of Python code."""
     namespace: dict = {}
     exec(code_str, namespace)  # noqa: S102 (executing controlled code from model for exercise)
     func = namespace.get("is_valid_password")
@@ -96,7 +119,16 @@ def your_build_reflexion_context(prev_code: str, failures: List[str]) -> str:
 
     Return a string that will be sent as the user content alongside the reflexion system prompt.
     """
-    return ""
+    failures_block = "\n".join(f"- {f}" for f in failures) if failures else "- (none)"
+    return (
+        "Previous implementation:\n"
+        "\n"
+        f"{prev_code}\n"
+        "```\n\n"
+        "Test failures:\n"
+        f"{failures_block}\n\n"
+        "Please revise the function to pass all tests."
+    )
 
 
 def apply_reflexion(
