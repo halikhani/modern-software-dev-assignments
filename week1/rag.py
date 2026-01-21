@@ -37,7 +37,18 @@ QUESTION = (
 
 
 # TODO: Fill this in!
-YOUR_SYSTEM_PROMPT = ""
+YOUR_SYSTEM_PROMPT = """
+You are a careful coding assistant. Use ONLY the provided context in the user message. If the context is missing or insufficient, still produce the best possible solution using only what is given, without inventing details.
+
+Output requirements:
+- Return exactly one fenced Python code block and nothing else.
+- Include necessary imports.
+- Follow the documented Base URL, endpoint path, and authentication header exactly as in the context.
+- Raise for non-200 responses.
+- Return only the user's name string.
+
+Be concise and correct.
+"""
 
 
 # For this simple example
@@ -56,7 +67,7 @@ def YOUR_CONTEXT_PROVIDER(corpus: List[str]) -> List[str]:
 
     For example, return [] to simulate missing context, or [corpus[0]] to include the API docs.
     """
-    return []
+    return [corpus[0]]
 
 
 def make_user_prompt(question: str, context_docs: List[str]) -> str:
