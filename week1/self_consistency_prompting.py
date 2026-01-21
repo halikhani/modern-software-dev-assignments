@@ -9,8 +9,12 @@ load_dotenv()
 NUM_RUNS_TIMES = 5
 
 # TODO: Fill this in! Try to get as close to 100% correctness across all runs as possible.
-YOUR_SYSTEM_PROMPT = ""
+# YOUR_SYSTEM_PROMPT = """ You are a careful math word‑problem solver. Solve the problem exactly. Do not include step‑by‑step reasoning. Output only a single final line in the format: "Answer: <number>".
+# """
+YOUR_SYSTEM_PROMPT = """ You are a careful math word‑problem solver. Solve the problem exactly. Do not include step‑by‑step reasoning. Output only a single final line in the format: "Answer: <number>".
+Before answering, verify the arithmetic once. Final response must be exactly one line starting with "Answer:" and followed by the number only."""
 
+# NOTE (Hamidreza): got 2 out of 5 correct with prompt not including the final verification step, and got 5 out of 5 correct with the final verification step.
 USER_PROMPT = """
 Solve this problem, then give the final answer on the last line as "Answer: <number>".
 
